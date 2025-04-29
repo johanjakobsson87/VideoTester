@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setPositiveButton("OK", (dialog, which) -> {
             testerId = Integer.parseInt(input.getText().toString().trim());
-            trainingPlaylistName = "playlist" + testerId + "0.csv";
-            realPlaylistName = "playlist" + testerId + "1.csv";
+            trainingPlaylistName = "playlist" + testerId + "0.cfg";
+            realPlaylistName = "playlist" + testerId + "1.cfg";
 
             loadPlaylistFromAssets(trainingPlaylistName);
             playNextVideo();
@@ -133,6 +133,17 @@ public class MainActivity extends AppCompatActivity {
         int videoRating = getSelectedRating(videoQualityGroup);
         int soundRating = getSelectedRating(soundQualityGroup);
         int audiovisualRating = getSelectedRating(audiovisualQualityGroup);
+
+        if(videoRating == -1 || soundRating == -1 || audiovisualRating == -1){
+            Toast.makeText(this, "Please select all ratings.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Reset radio buttons
+        videoQualityGroup.clearCheck();
+        soundQualityGroup.clearCheck();
+        audiovisualQualityGroup.clearCheck();
+
 
         Log.d(TAG, "File name: " + playlist.get(currentVideoIndex - 1));
         Log.d(TAG, "Video Quality Rating: " + videoRating);
