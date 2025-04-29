@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/ratingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="#FFFFFF"
+        android:visibility="gone">
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rate Video Quality:" />
+        <RadioGroup android:id="@+id/video_quality_group" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+            <RadioButton android:text="1" android:id="@+id/video_1" />
+            <RadioButton android:text="2" android:id="@+id/video_2" />
+            <RadioButton android:text="3" android:id="@+id/video_3" />
+            <RadioButton android:text="4" android:id="@+id/video_4" />
+            <RadioButton android:text="5" android:id="@+id/video_5" />
+        </RadioGroup>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rate Sound Quality:" />
+        <RadioGroup android:id="@+id/sound_quality_group" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+            <RadioButton android:text="1" android:id="@+id/sound_1" />
+            <RadioButton android:text="2" android:id="@+id/sound_2" />
+            <RadioButton android:text="3" android:id="@+id/sound_3" />
+            <RadioButton android:text="4" android:id="@+id/sound_4" />
+            <RadioButton android:text="5" android:id="@+id/sound_5" />
+        </RadioGroup>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rate Audiovisual Quality:" />
+        <RadioGroup android:id="@+id/audiovisual_quality_group" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+            <RadioButton android:text="1" android:id="@+id/av_1" />
+            <RadioButton android:text="2" android:id="@+id/av_2" />
+            <RadioButton android:text="3" android:id="@+id/av_3" />
+            <RadioButton android:text="4" android:id="@+id/av_4" />
+            <RadioButton android:text="5" android:id="@+id/av_5" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/submit_rating_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit" />
+    </LinearLayout>
+</RelativeLayout>
