@@ -24,29 +24,29 @@
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rate Video Quality:" />
         <RadioGroup android:id="@+id/video_quality_group" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
-            <RadioButton android:text="1" android:id="@+id/video_1" />
-            <RadioButton android:text="2" android:id="@+id/video_2" />
-            <RadioButton android:text="3" android:id="@+id/video_3" />
-            <RadioButton android:text="4" android:id="@+id/video_4" />
-            <RadioButton android:text="5" android:id="@+id/video_5" />
+            <RadioButton android:text="1 - Bad" android:id="@+id/video_1"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="2 - Poor" android:id="@+id/video_2"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="3 - Fair" android:id="@+id/video_3"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="4 - Good" android:id="@+id/video_4"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="5 - Excellent" android:id="@+id/video_5"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
         </RadioGroup>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rate Sound Quality:" />
         <RadioGroup android:id="@+id/sound_quality_group" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
-            <RadioButton android:text="1" android:id="@+id/sound_1" />
-            <RadioButton android:text="2" android:id="@+id/sound_2" />
-            <RadioButton android:text="3" android:id="@+id/sound_3" />
-            <RadioButton android:text="4" android:id="@+id/sound_4" />
-            <RadioButton android:text="5" android:id="@+id/sound_5" />
+            <RadioButton android:text="1 - Bad" android:id="@+id/sound_1"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="2 - Poor" android:id="@+id/sound_2"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="3 - Fair" android:id="@+id/sound_3"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="4 - Good" android:id="@+id/sound_4"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="5 - Excellent" android:id="@+id/sound_5"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
         </RadioGroup>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rate Audiovisual Quality:" />
         <RadioGroup android:id="@+id/audiovisual_quality_group" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
-            <RadioButton android:text="1" android:id="@+id/av_1" />
-            <RadioButton android:text="2" android:id="@+id/av_2" />
-            <RadioButton android:text="3" android:id="@+id/av_3" />
-            <RadioButton android:text="4" android:id="@+id/av_4" />
-            <RadioButton android:text="5" android:id="@+id/av_5" />
+            <RadioButton android:text="1 - Bad" android:id="@+id/av_1"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="2 - Poor" android:id="@+id/av_2"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="3 - Fair" android:id="@+id/av_3"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="4 - Good" android:id="@+id/av_4"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <RadioButton android:text="5 - Excellent" android:id="@+id/av_5"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
         </RadioGroup>
 
         <Button

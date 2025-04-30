@@ -59,7 +59,12 @@ public class MainActivity extends AppCompatActivity {
         videoQualityGroup = findViewById(R.id.video_quality_group);
         soundQualityGroup = findViewById(R.id.sound_quality_group);
         audiovisualQualityGroup = findViewById(R.id.audiovisual_quality_group);
+
         submitButton = findViewById(R.id.submit_rating_button);
+        submitButton.setEnabled(false);
+        submitButton.setBackgroundColor(Color.GRAY);
+
+
 
         startRealTestButton = new Button(this);
         startRealTestButton.setText("Start Real Test");
@@ -67,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
         ((RelativeLayout) findViewById(R.id.mainLayout)).addView(startRealTestButton);
 
         submitButton.setOnClickListener(v -> submitRatings());
+
+        videoQualityGroup.setOnCheckedChangeListener((group, checkedId) -> checkAllRatingsSelected());
+        soundQualityGroup.setOnCheckedChangeListener((group, checkedId) -> checkAllRatingsSelected());
+        audiovisualQualityGroup.setOnCheckedChangeListener((group, checkedId) -> checkAllRatingsSelected());
+
+
 
         videoView.setOnCompletionListener(mp -> {
             videoView.setVisibility(View.GONE);
@@ -79,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             isTrainingSession = false;
             startRealTestButton.setVisibility(View.GONE);
             currentVideoIndex = 0;
+            saveRatingsToCsv("UserID: "+testerId,0,0,0);
             loadPlaylistFromAssets(realPlaylistName);
             playNextVideo();
         });
@@ -236,15 +248,20 @@ public class MainActivity extends AppCompatActivity {
         soundQualityGroup.clearCheck();
         audiovisualQualityGroup.clearCheck();
 
+        submitButton.setEnabled(false);
+        submitButton.setBackgroundColor(Color.GRAY);
 
-        Log.d(TAG, "File name: " + playlist.get(currentVideoIndex - 1));
+        String currentFile = currentVideoIndex < playlist.size() ? playlist.get(currentVideoIndex) : "Unknown";
+
+        Log.d(TAG, "File name: " + currentFile);
         Log.d(TAG, "Video Quality Rating: " + videoRating);
         Log.d(TAG, "Sound Quality Rating: " + soundRating);
         Log.d(TAG, "Audiovisual Quality Rating: " + audiovisualRating);
 
         if (!isTrainingSession) {
-            saveRatingsToCsv(videoRating, soundRating, audiovisualRating);
+            saveRatingsToCsv(currentFile, videoRating, soundRating, audiovisualRating);
         }
+
         currentVideoIndex++;
         playNextVideo();
     }
@@ -253,33 +270,30 @@ public class MainActivity extends AppCompatActivity {
         int selectedId = group.getCheckedRadioButtonId();
         if (selectedId == -1) return -1;
         RadioButton selectedButton = findViewById(selectedId);
-        return Integer.parseInt(selectedButton.getText().toString());
+
+        // Get only the number part before " - "
+        String ratingText = selectedButton.getText().toString().trim();
+        String numberPart = ratingText.split(" ")[0];
+
+        return Integer.parseInt(numberPart);
     }
 
-    private void saveRatingsToCsv(int videoRating, int soundRating, int audiovisualRating) {
-        String fileName = "ratings.csv";
-        /*String entry = "Tester ID: " + testerId + ", File: " + playlist.get(currentVideoIndex - 1)
-                + ", Video: " + videoRating
-                + ", Sound: " + soundRating
-                + ", AV: " + audiovisualRating + "\n";
 
-        String entry = String.format(Locale.getDefault(),
-                "Tester ID: \t %d \n File: \t %s \n Video: \t %d \n Sound: \t %d \n AV: \t %d \n",
-                testerId, playlist.get(currentVideoIndex - 1), videoRating, soundRating, audiovisualRating
-        );*/
+    private void saveRatingsToCsv(String fileName, int videoRating, int soundRating, int audiovisualRating) {
+        String csvFileName = "ratings.csv";
         String entry = String.format(Locale.getDefault(),
                 "%d, %s, %d, %d, %d\n",
-                testerId, playlist.get(currentVideoIndex - 1), videoRating, soundRating, audiovisualRating
+                testerId, fileName, videoRating, soundRating, audiovisualRating
         );
+        Log.d(TAG, "Saved rating entry: " + entry);
 
-
-
-        try (FileOutputStream fos = openFileOutput(fileName, MODE_APPEND)) {
+        try (FileOutputStream fos = openFileOutput(csvFileName, MODE_APPEND)) {
             fos.write(entry.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
     private void manualRestart() {
@@ -316,6 +330,15 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         );
+    }
+
+    private void checkAllRatingsSelected(){
+        boolean allSelected = videoQualityGroup.getCheckedRadioButtonId() != -1 && audiovisualQualityGroup.getCheckedRadioButtonId() != -1 && soundQualityGroup.getCheckedRadioButtonId() != -1;
+        submitButton.setEnabled(allSelected);
+        submitButton.setBackgroundColor(allSelected ? Color.parseColor("#6200EE") : Color.GRAY);
+
+
+
     }
 
 
