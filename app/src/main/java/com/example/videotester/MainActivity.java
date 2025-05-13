@@ -15,6 +15,11 @@ import java.io.*;
 import java.util.*;
 import java.util.Locale;
 import android.os.Environment;
+import android.content.ContentValues;
+import android.provider.MediaStore;
+import android.os.Build;
+import android.content.ContentResolver;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -133,10 +138,22 @@ public class MainActivity extends AppCompatActivity {
         isTrainingSession = preferences.getBoolean("isTrainingSession", true);
 
         // If there is a valid tester ID, reload the playlist and start the video session
-        if (testerId != -1) {
+       /* if (testerId != -1) {
             loadPlaylistFromAssets(trainingPlaylistName);
             playNextVideo();
+        }*/
+        if (testerId != -1) {
+            if (isTrainingSession) {
+                loadPlaylistFromAssets(trainingPlaylistName);
+            } else {
+                loadPlaylistFromAssets(realPlaylistName);
+                startRealTestButton.setVisibility(View.GONE); // Hide if real session already started
+            }
+            playNextVideo();
         }
+
+
+
     }
 
 
@@ -300,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
         clearSavedState();
         recreate(); // Restart activity and go back to tester ID input
     }
-    private void exportRatingsFileToDownloads() {
+    /*private void exportRatingsFileToDownloads() {
         File internalFile = new File(getFilesDir(), "ratings.csv");
         File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File targetFile = new File(downloadsDir, "ratings.csv");
@@ -319,7 +336,65 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to export ratings file", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }*/
+
+    private void exportRatingsFileToDownloads() {
+        File internalFile = new File(getFilesDir(), "ratings.csv");
+
+        if (!internalFile.exists()) {
+            Toast.makeText(this, "No ratings file found to export", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String fileName = "ratings.csv";
+
+        try {
+            ContentResolver resolver = getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+            contentValues.put(MediaStore.Downloads.MIME_TYPE, "text/csv");
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                contentValues.put(MediaStore.Downloads.IS_PENDING, 1);
+            }
+
+            Uri collection = MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+            Uri fileUri = resolver.insert(collection, contentValues);
+
+            if (fileUri == null) {
+                Toast.makeText(this, "Failed to create file in Downloads", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            try (OutputStream out = resolver.openOutputStream(fileUri);
+                 InputStream in = new FileInputStream(internalFile)) {
+
+                byte[] buffer = new byte[1024];
+                int length;
+
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                contentValues.clear();
+                contentValues.put(MediaStore.Downloads.IS_PENDING, 0);
+                resolver.update(fileUri, contentValues, null, null);
+            }
+
+            Toast.makeText(this, "Ratings file exported to Downloads", Toast.LENGTH_LONG).show();
+
+        } catch (IOException e) {
+            Log.e(TAG, "Export failed: " + e.getMessage(), e);
+            Toast.makeText(this, "Failed to export ratings file", Toast.LENGTH_LONG).show();
+        }
     }
+
+
+
+
+
     private void enterImmersiveMode() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
